@@ -799,13 +799,18 @@ function toggleInlineEdit() {
 }
 
 function copyTypo() {
-  const changes = editableEls
+  const textChanges = editableEls
     .filter(t => t.el.innerHTML !== t.original)
-    .map(t => t.el.textContent.trim());
-  const text = changes.length ? changes.join('\n---\n') : '(no changes)';
+    .map(t => `[text] ${t.el.textContent.trim()}`);
+  const sizeChanges = fontTargets
+    .filter(t => t.fontSize !== t.origSize)
+    .map(t => `[P${t.page} ${t.tag}] ${t.origSize}px → ${t.fontSize}px`);
+  const all = [...textChanges, ...sizeChanges];
+  const text = all.length ? all.join('\n') : '(no changes yet)';
   navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('#dbg button');
-    if (btn) { btn.textContent = '✅'; setTimeout(() => btn.textContent = '📋 Export', 1500); }
+    alert('✅ Copied!\n\n' + text);
+  }).catch(() => {
+    prompt('Copy these changes:', text);
   });
 }
 
@@ -816,7 +821,7 @@ secs.forEach((sec, i) => {
     if (el.closest('#dbg')) return;
     const cs = getComputedStyle(el);
     const tag = el.tagName.toLowerCase() + (el.className ? '.' + el.className.split(' ')[0] : '');
-    fontTargets.push({ el, tag, page: i+1, fontSize: Math.round(parseFloat(cs.fontSize)), preview: el.textContent.slice(0,25) });
+    fontTargets.push({ el, tag, page: i+1, fontSize: Math.round(parseFloat(cs.fontSize)), origSize: Math.round(parseFloat(cs.fontSize)), preview: el.textContent.slice(0,25) });
   });
 });
 function updateFontPanel() {
