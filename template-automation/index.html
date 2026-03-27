@@ -775,6 +775,7 @@ const secs = document.querySelectorAll('section[id]');
 let curSec = 0;
 window.addEventListener('scroll', () => {
   secs.forEach((s, j) => { if (scrollY >= s.offsetTop - 400) curSec = j; });
+});
 
 // ── Inline Text Editing ──
 let inlineEditMode = false;
