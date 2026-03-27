@@ -272,6 +272,7 @@
     letter-spacing: -0.03em;
     line-height: 1.15;
     max-width: 100%;
+    white-space: nowrap;
   }
   .big-quote em { font-style: normal; color: var(--orange); }
   .quote-sub {
@@ -526,7 +527,7 @@
   </div>
 
   <div class="center-cluster fi d1">
-    <h1 style="font-size:clamp(2.8rem,6vw,5rem)">Template<br>Automation</h1>
+    <h1 style="font-size:clamp(3rem,6.5vw,5.2rem)">Template<br>Automation</h1>
     <p class="sub" style="margin-top:20px;white-space:nowrap">
       From hours of manual testing to minutes of AI-powered batch processing
     </p>
@@ -567,7 +568,7 @@
 </section>
 
 <!-- ═══ 03 INSIGHT ═══ -->
-<section class="quote-section" id="s3">
+<section class="quote-section" id="s3" style="max-width:100%">
   <div class="big-quote reveal">
     "What if AI could accelerate the workflow,<br>not just the <em>output</em>?"
   </div>
@@ -746,8 +747,8 @@
 <!-- Debug Panel -->
 <div id="dbg" style="position:fixed;top:10px;right:10px;z-index:9999;background:rgba(0,0,0,0.88);color:#eee;font:12px/1.5 monospace;padding:14px 16px;border-radius:10px;max-height:90vh;overflow-y:auto;min-width:320px;backdrop-filter:blur(8px);display:none">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-    <b style="font-size:13px">🎛 Typography Controls</b>
-    <button onclick="copyTypo()" style="background:#6B8E23;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px">📋 Copy All</button>
+    <b style="font-size:13px">🎛 Text Editor</b>
+    <button onclick="copyTypo()" style="background:#6B8E23;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px">📋 Export Changes</button>
   </div>
   <div id="dbg-typo"></div>
   <hr style="border:none;border-top:1px solid rgba(255,255,255,0.15);margin:10px 0">
@@ -770,89 +771,76 @@ let curSec = 0;
 window.addEventListener('scroll', () => {
   secs.forEach((s, j) => { if (scrollY >= s.offsetTop - 400) curSec = j; });
 
-// ── Typography debug ──
-const typoTargets = [];
+// ── Text Content Editor ──
+const textTargets = [];
 secs.forEach((sec, i) => {
   const id = sec.id || `s${i}`;
-  // Find headings and subtitle text in each section
-  const h = sec.querySelector('h1, h2, .big-quote');
-  const sub = sec.querySelector('.sub, .quote-sub');
-  if (h) {
-    const cs = getComputedStyle(h);
-    typoTargets.push({
-      section: id,
-      label: `Page ${i+1}`,
-      el: h,
-      tag: h.tagName + (h.classList.contains('big-quote') ? '.big-quote' : ''),
-      fontSize: Math.round(parseFloat(cs.fontSize)),
-      scaleX: 1,
-      preview: h.textContent.slice(0, 30)
-    });
-  }
-  if (sub) {
-    const cs = getComputedStyle(sub);
-    typoTargets.push({
-      section: id,
-      label: `Page ${i+1} sub`,
-      el: sub,
-      tag: 'sub',
-      fontSize: Math.round(parseFloat(cs.fontSize)),
-      scaleX: 1,
-      preview: sub.textContent.slice(0, 30)
-    });
-  }
+  sec.querySelectorAll('h1, h2, .big-quote, .sub, .quote-sub, h3, .desc, .label, .sol-badge, li, .fi-name, .fi-sub, .flow-sub, .stat-num, .stat-label, .take-title, .take-desc').forEach(el => {
+    if (el.closest('#dbg')) return;
+    const tag = el.tagName.toLowerCase() + (el.className ? '.' + el.className.split(' ')[0] : '');
+    textTargets.push({ section: id, page: i+1, el, tag, original: el.innerHTML });
+  });
 });
 
-function updateTypoPanel() {
+function updateTextPanel() {
   const el = document.getElementById('dbg-typo');
   if (!el) return;
-  el.innerHTML = typoTargets.map((t, i) =>
-    `<div style="margin:5px 0;padding:6px;border-radius:6px;background:rgba(255,255,255,0.05)">
-      <div style="color:#6B8E23;font-size:11px;font-weight:bold">${t.label} · ${t.tag}</div>
-      <div style="font-size:10px;color:#999;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.preview}</div>
-      <div style="display:flex;align-items:center;gap:6px;margin:3px 0">
-        <span style="width:44px;font-size:10px">Size</span>
-        <input type="range" min="10" max="120" step="1" value="${t.fontSize}"
-          oninput="setTypoSize(${i},this.value)" style="flex:1;accent-color:#6B8E23;height:14px">
-        <span style="width:36px;font-size:10px;text-align:right">${t.fontSize}px</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;margin:3px 0">
-        <span style="width:44px;font-size:10px">ScaleX</span>
-        <input type="range" min="0.5" max="1" step="0.02" value="${t.scaleX}"
-          oninput="setTypoScaleX(${i},this.value)" style="flex:1;accent-color:#D4936A;height:14px">
-        <span style="width:36px;font-size:10px;text-align:right">${t.scaleX}</span>
-      </div>
-    </div>`
+  // Group by page
+  const pages = {};
+  textTargets.forEach((t, i) => {
+    if (!pages[t.page]) pages[t.page] = [];
+    pages[t.page].push({...t, idx: i});
+  });
+  el.innerHTML = Object.entries(pages).map(([p, items]) =>
+    `<details style="margin:4px 0" ${p==='1'?'open':''}>
+      <summary style="cursor:pointer;color:#6B8E23;font-weight:bold;font-size:11px;padding:4px 0">Page ${p} (${items.length} texts)</summary>
+      ${items.map(t =>
+        `<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(255,255,255,0.05)">
+          <div style="font-size:9px;color:#888;margin-bottom:2px">${t.tag}</div>
+          <textarea data-idx="${t.idx}" oninput="setText(${t.idx},this.value)" onfocus="highlightEl(${t.idx})" onblur="unhighlightEl(${t.idx})"
+            style="width:100%;min-height:28px;background:rgba(255,255,255,0.08);color:#eee;border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:4px 6px;font:11px/1.4 monospace;resize:vertical">${t.el.innerHTML.replace(/</g,'&lt;')}</textarea>
+        </div>`
+      ).join('')}
+    </details>`
   ).join('');
 }
 
-function setTypoSize(i, v) {
-  typoTargets[i].fontSize = parseInt(v);
-  typoTargets[i].el.style.fontSize = v + 'px';
-  updateTypoPanel();
+function setText(i, v) {
+  textTargets[i].el.innerHTML = v;
 }
 
-function setTypoScaleX(i, v) {
-  typoTargets[i].scaleX = parseFloat(v);
-  typoTargets[i].el.style.transform = `scaleX(${v})`;
-  typoTargets[i].el.style.transformOrigin = 'left';
-  updateTypoPanel();
+function highlightEl(i) {
+  textTargets[i].el.style.outline = '2px solid #6B8E23';
+  textTargets[i].el.style.outlineOffset = '2px';
+  textTargets[i].el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function unhighlightEl(i) {
+  textTargets[i].el.style.outline = '';
+  textTargets[i].el.style.outlineOffset = '';
 }
 
 function copyTypo() {
-  const lines = typoTargets.map(t => {
-    let parts = [`${t.label} (${t.tag}): ${t.fontSize}px`];
-    if (t.scaleX !== 1) parts.push(`scaleX(${t.scaleX})`);
-    return parts.join(' ');
+  const pages = {};
+  textTargets.forEach(t => {
+    if (!pages[t.page]) pages[t.page] = [];
+    if (t.el.innerHTML !== t.original) {
+      pages[t.page].push(`[${t.tag}] ${t.el.textContent}`);
+    }
   });
+  let lines = [];
+  Object.entries(pages).forEach(([p, items]) => {
+    if (items.length) { lines.push(`--- Page ${p} ---`); lines.push(...items); }
+  });
+  if (!lines.length) lines.push('(no changes)');
   navigator.clipboard.writeText(lines.join('\n')).then(() => {
     const btn = document.querySelector('#dbg button');
     btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy All', 1500);
+    setTimeout(() => btn.textContent = '📋 Export Changes', 1500);
   });
 }
 
-setTimeout(updateTypoPanel, 600);
+setTimeout(updateTextPanel, 600);
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'd' || e.key === 'D') {
