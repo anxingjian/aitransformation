@@ -770,7 +770,9 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 const secs = document.querySelectorAll('section[id]');
 let curSec = 0;
 window.addEventListener('scroll', () => {
+  const prev = curSec;
   secs.forEach((s, j) => { if (scrollY >= s.offsetTop - 400) curSec = j; });
+  if (prev !== curSec && typeof updateFontPanel === 'function') updateFontPanel();
 });
 
 // ── Inline Text Editing ──
@@ -820,13 +822,16 @@ secs.forEach((sec, i) => {
 function updateFontPanel() {
   const el = document.getElementById('dbg-fontsize');
   if (!el) return;
-  el.innerHTML = fontTargets.map((t, i) =>
-    `<div style="display:flex;align-items:center;gap:6px;margin:4px 0">
-      <span style="width:70px;font-size:10px;color:#6B8E23;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="P${t.page} ${t.tag}">P${t.page} ${t.tag}</span>
+  const pageItems = fontTargets.filter(t => t.page === curSec + 1);
+  if (!pageItems.length) { el.innerHTML = '<div style="font-size:10px;color:#666">No headings on this page</div>'; return; }
+  el.innerHTML = `<div style="font-size:10px;color:#888;margin-bottom:4px">Page ${curSec+1}</div>` + pageItems.map(t => {
+    const i = fontTargets.indexOf(t);
+    return `<div style="display:flex;align-items:center;gap:6px;margin:4px 0">
+      <span style="width:70px;font-size:10px;color:#6B8E23;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${t.tag}">${t.tag}</span>
       <input type="range" min="10" max="140" step="1" value="${t.fontSize}" oninput="setFontSize(${i},this.value)" style="flex:1;accent-color:#6B8E23;height:14px">
       <span style="width:36px;font-size:10px;text-align:right">${t.fontSize}px</span>
-    </div>`
-  ).join('');
+    </div>`;
+  }).join('');
 }
 function setFontSize(i, v) {
   fontTargets[i].fontSize = parseInt(v);
