@@ -805,6 +805,7 @@ function copyTypo() {
 }
 });
 document.addEventListener('keydown', e => {
+  if (e.target.isContentEditable) return;
   if (e.key === 'd' || e.key === 'D') {
     const p = document.getElementById('dbg');
     p.style.display = p.style.display === 'none' ? 'block' : 'none';
