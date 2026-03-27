@@ -273,6 +273,7 @@
     line-height: 1.15;
     max-width: 100%;
     white-space: nowrap;
+    --sx: 0.64;
   }
   .big-quote em { font-style: normal; color: var(--orange); }
   .quote-sub {
@@ -373,6 +374,9 @@
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.04em;
+    transform: scaleX(0.64);
+    transform-origin: left;
+    display: inline-block;
   }
   .stat .lbl {
     font-size: 0.75rem;
@@ -616,7 +620,7 @@
 
   <div class="stats reveal">
     <div class="stat">
-      <div class="val" style="color:var(--fg-3)">1–2h</div>
+      <div class="val" style="color:var(--fg-3)">1h</div>
       <div class="lbl">Before · per template</div>
     </div>
     <div class="stat">
