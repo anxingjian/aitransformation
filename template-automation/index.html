@@ -803,7 +803,7 @@ function copyTypo() {
     if (btn) { btn.textContent = '✅'; setTimeout(() => btn.textContent = '📋 Export', 1500); }
   });
 }
-});
+
 document.addEventListener('keydown', e => {
   if (e.target.isContentEditable) return;
   if (e.key === 'd' || e.key === 'D') {
