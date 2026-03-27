@@ -747,18 +747,22 @@
 <!-- Debug Panel -->
 <div id="dbg" style="position:fixed;top:10px;right:10px;z-index:9999;background:rgba(0,0,0,0.88);color:#eee;font:12px/1.5 monospace;padding:14px 16px;border-radius:10px;max-height:90vh;overflow-y:auto;min-width:320px;backdrop-filter:blur(8px);display:none">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-    <b style="font-size:13px">🎛 Text Editor</b>
-    <button onclick="copyTypo()" style="background:#6B8E23;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px">📋 Export Changes</button>
+    <b style="font-size:13px">🎛 Controls</b>
+    <div style="display:flex;gap:6px">
+      <button onclick="toggleInlineEdit()" style="background:#6B8E23;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px">✏️ Edit Text</button>
+      <button onclick="copyTypo()" style="background:#4a6e45;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px">📋 Export</button>
+    </div>
   </div>
-  <div id="dbg-typo"></div>
+  <div style="font-size:10px;color:#999;margin-bottom:8px">Click <b>Edit Text</b> to make all text inline-editable. Click directly on page to edit.</div>
   <hr style="border:none;border-top:1px solid rgba(255,255,255,0.15);margin:10px 0">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
     <b style="font-size:12px">🃏 Card Positions</b>
     <button onclick="copyCards()" style="background:#BC6C25;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px">📋 Copy Cards</button>
   </div>
   <div id="dbg-cards" style="max-height:200px;overflow-y:auto"></div>
-  <div style="margin-top:8px;font-size:10px;color:#888">Press <b>D</b> to toggle. Drag hero cards to reposition.</div>
+  <div style="margin-top:8px;font-size:10px;color:#888">Press <b>D</b> to toggle panel. Drag hero cards to reposition.</div>
 </div>
+<div id="edit-badge" style="display:none;position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;background:#6B8E23;color:#fff;font:bold 12px/1 system-ui;padding:6px 14px;border-radius:20px">✏️ Inline Edit Mode — click any text to edit</div>
 
 <script>
 const obs = new IntersectionObserver(es => {
@@ -771,76 +775,39 @@ let curSec = 0;
 window.addEventListener('scroll', () => {
   secs.forEach((s, j) => { if (scrollY >= s.offsetTop - 400) curSec = j; });
 
-// ── Text Content Editor ──
-const textTargets = [];
-secs.forEach((sec, i) => {
-  const id = sec.id || `s${i}`;
+// ── Inline Text Editing ──
+let inlineEditMode = false;
+const editableEls = [];
+secs.forEach(sec => {
   sec.querySelectorAll('h1, h2, .big-quote, .sub, .quote-sub, h3, .desc, .label, .sol-badge, li, .fi-name, .fi-sub, .flow-sub, .stat-num, .stat-label, .take-title, .take-desc').forEach(el => {
     if (el.closest('#dbg')) return;
-    const tag = el.tagName.toLowerCase() + (el.className ? '.' + el.className.split(' ')[0] : '');
-    textTargets.push({ section: id, page: i+1, el, tag, original: el.innerHTML });
+    editableEls.push({ el, original: el.innerHTML });
   });
 });
 
-function updateTextPanel() {
-  const el = document.getElementById('dbg-typo');
-  if (!el) return;
-  // Group by page
-  const pages = {};
-  textTargets.forEach((t, i) => {
-    if (!pages[t.page]) pages[t.page] = [];
-    pages[t.page].push({...t, idx: i});
+function toggleInlineEdit() {
+  inlineEditMode = !inlineEditMode;
+  editableEls.forEach(t => {
+    t.el.contentEditable = inlineEditMode;
+    t.el.style.outline = inlineEditMode ? '1px dashed rgba(45,90,39,0.4)' : '';
+    t.el.style.cursor = inlineEditMode ? 'text' : '';
   });
-  el.innerHTML = Object.entries(pages).map(([p, items]) =>
-    `<details style="margin:4px 0" ${p==='1'?'open':''}>
-      <summary style="cursor:pointer;color:#6B8E23;font-weight:bold;font-size:11px;padding:4px 0">Page ${p} (${items.length} texts)</summary>
-      ${items.map(t =>
-        `<div style="margin:3px 0;padding:4px 6px;border-radius:4px;background:rgba(255,255,255,0.05)">
-          <div style="font-size:9px;color:#888;margin-bottom:2px">${t.tag}</div>
-          <textarea data-idx="${t.idx}" oninput="setText(${t.idx},this.value)" onfocus="highlightEl(${t.idx})" onblur="unhighlightEl(${t.idx})"
-            style="width:100%;min-height:28px;background:rgba(255,255,255,0.08);color:#eee;border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:4px 6px;font:11px/1.4 monospace;resize:vertical">${t.el.innerHTML.replace(/</g,'&lt;')}</textarea>
-        </div>`
-      ).join('')}
-    </details>`
-  ).join('');
-}
-
-function setText(i, v) {
-  textTargets[i].el.innerHTML = v;
-}
-
-function highlightEl(i) {
-  textTargets[i].el.style.outline = '2px solid #6B8E23';
-  textTargets[i].el.style.outlineOffset = '2px';
-  textTargets[i].el.scrollIntoView({behavior:'smooth', block:'center'});
-}
-
-function unhighlightEl(i) {
-  textTargets[i].el.style.outline = '';
-  textTargets[i].el.style.outlineOffset = '';
+  const badge = document.getElementById('edit-badge');
+  if (badge) {
+    badge.style.display = inlineEditMode ? 'block' : 'none';
+  }
 }
 
 function copyTypo() {
-  const pages = {};
-  textTargets.forEach(t => {
-    if (!pages[t.page]) pages[t.page] = [];
-    if (t.el.innerHTML !== t.original) {
-      pages[t.page].push(`[${t.tag}] ${t.el.textContent}`);
-    }
-  });
-  let lines = [];
-  Object.entries(pages).forEach(([p, items]) => {
-    if (items.length) { lines.push(`--- Page ${p} ---`); lines.push(...items); }
-  });
-  if (!lines.length) lines.push('(no changes)');
-  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+  const changes = editableEls
+    .filter(t => t.el.innerHTML !== t.original)
+    .map(t => t.el.textContent.trim());
+  const text = changes.length ? changes.join('\n---\n') : '(no changes)';
+  navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('#dbg button');
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Export Changes', 1500);
+    if (btn) { btn.textContent = '✅'; setTimeout(() => btn.textContent = '📋 Export', 1500); }
   });
 }
-
-setTimeout(updateTextPanel, 600);
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'd' || e.key === 'D') {
