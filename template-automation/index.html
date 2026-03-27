@@ -777,7 +777,7 @@ window.addEventListener('scroll', () => {
 let inlineEditMode = false;
 const editableEls = [];
 secs.forEach(sec => {
-  sec.querySelectorAll('h1, h2, .big-quote, .sub, .quote-sub, h3, .desc, .label, .sol-badge, li, .fi-name, .fi-sub, .flow-sub, .stat-num, .stat-label, .take-title, .take-desc').forEach(el => {
+  sec.querySelectorAll('h1, h2, .big-quote, .sub, .quote-sub, h3, .desc, .label, .sol-badge, li, .fi-name, .fi-sub, .flow-sub, .stat-num, .stat-label, .take-title, .take-desc, .il, .ib, p.sub, .demo-badge, .sol-head, .insight').forEach(el => {
     if (el.closest('#dbg')) return;
     editableEls.push({ el, original: el.innerHTML });
   });
