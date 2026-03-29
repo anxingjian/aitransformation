@@ -178,12 +178,13 @@
   }
   .orbit-card {
     position: absolute;
-    width: 140px; height: 88px;
+    width: 160px; height: 124px;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 8px 28px rgba(45,90,39,0.12);
-    margin-top: -44px; margin-left: -70px;
+    margin-top: -62px; margin-left: -80px;
     cursor: default;
+    padding: 0;
     transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
   }
   .orbit-card:hover { z-index: 10; }
@@ -207,11 +208,11 @@
   .orbit-card:hover.oc-8 { transform: translate(-563px,-428px) rotate(0) scale(1.77); }
 
   @keyframes ofloat {
-    0% { margin-top: -44px; }
-    100% { margin-top: -56px; }
+    0% { margin-top: -62px; }
+    100% { margin-top: -74px; }
   }
 
-  .orbit-card svg { width: 100%; height: 100%; }
+  .orbit-card img, .orbit-card svg { width: 100%; height: 100%; display: block; object-fit: cover; }
 
   @media (max-width: 900px) {
     .orbit-container { transform: scale(0.65); }
