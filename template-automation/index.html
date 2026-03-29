@@ -842,6 +842,7 @@ document.addEventListener('keydown', e => {
 
 // ── Drag logic for orbit cards ──
 const orbCont = document.querySelector('.orbit-container');
+if (!orbCont) { /* orbit cards removed */ } else {
 const cards = document.querySelectorAll('.orbit-card');
 const cardData = {};
 let selectedCard = null;
@@ -972,6 +973,7 @@ function copyCards() {
 }
 
 setTimeout(readPositions, 500);
+} // end orbit-container guard
 </script>
 
 <!-- Image overlay -->
