@@ -974,24 +974,21 @@ function copyCards() {
 
 setTimeout(readPositions, 500);
 } // end orbit-container guard
-</script>
 
-<!-- Image overlay -->
-<div id="img-overlay" onclick="this.classList.remove('open')"><img id="overlay-img" src="" alt=""></div>
-<script>
-function openLightbox(src) {
+// ── Lightbox ──
+window.openLightbox = function(src) {
   const lb = document.getElementById('lightbox');
   document.getElementById('lb-img').src = src;
   lb.style.opacity = '1';
   lb.style.pointerEvents = 'auto';
   document.getElementById('lb-img').style.transform = 'scale(1)';
-}
-function closeLightbox() {
+};
+window.closeLightbox = function() {
   const lb = document.getElementById('lightbox');
   lb.style.opacity = '0';
   lb.style.pointerEvents = 'none';
   document.getElementById('lb-img').style.transform = 'scale(0.95)';
-}
+};
 document.querySelectorAll('.pain-card img').forEach(img => {
   img.addEventListener('click', () => openLightbox(img.src));
 });
