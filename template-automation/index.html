@@ -477,6 +477,12 @@
   }
   .end h2 { font-weight: 400; letter-spacing: -0.02em; }
   .end .meta { margin-top: 12px; font-size: 0.82rem; color: var(--fg-3); font-weight: 500; }
+  /* Image overlay */
+  .pain-card img { cursor: pointer; transition: opacity 0.2s; }
+  .pain-card img:hover { opacity: 0.85; }
+  #img-overlay { display:none; position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0.85); backdrop-filter:blur(6px); cursor:pointer; align-items:center; justify-content:center; }
+  #img-overlay.open { display:flex; }
+  #img-overlay img { max-width:90vw; max-height:90vh; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.5); }
 </style>
 </head>
 <body>
@@ -500,32 +506,6 @@
 
 <!-- ═══ 01 HERO ═══ -->
 <section class="hero" id="s1">
-  <div class="orbit-container">
-    <!-- Card 2 -->
-    <div class="orbit-card oc-2">
-      <img src="templateshowcase/Frame%209.png" alt="" style="width:100%;height:100%;object-fit:cover">
-    </div>
-    <!-- Card 4 -->
-    <div class="orbit-card oc-4">
-      <img src="templateshowcase/Frame%204.png" alt="" style="width:100%;height:100%;object-fit:cover">
-    </div>
-    <!-- Card 5 -->
-    <div class="orbit-card oc-5">
-      <img src="templateshowcase/Frame%205.png" alt="" style="width:100%;height:100%;object-fit:cover">
-    </div>
-    <!-- Card 6 -->
-    <div class="orbit-card oc-6">
-      <img src="templateshowcase/Frame%206.png" alt="" style="width:100%;height:100%;object-fit:cover">
-    </div>
-    <!-- Card 7 -->
-    <div class="orbit-card oc-7">
-      <img src="templateshowcase/Frame%207.png" alt="" style="width:100%;height:100%;object-fit:cover">
-    </div>
-    <!-- Card 8 -->
-    <div class="orbit-card oc-8">
-      <img src="templateshowcase/Frame%208.png" alt="" style="width:100%;height:100%;object-fit:cover">
-    </div>
-  </div>
 
   <div class="center-cluster fi d1">
     <h1 style="font-size:clamp(3rem,6.5vw,5.2rem)">Template<br>Automation</h1>
@@ -993,5 +973,16 @@ function copyCards() {
 setTimeout(readPositions, 500);
 </script>
 
+<!-- Image overlay -->
+<div id="img-overlay" onclick="this.classList.remove('open')"><img id="overlay-img" src="" alt=""></div>
+<script>
+document.querySelectorAll('.pain-card img').forEach(img => {
+  img.addEventListener('click', () => {
+    document.getElementById('overlay-img').src = img.src;
+    document.getElementById('img-overlay').classList.add('open');
+  });
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('img-overlay').classList.remove('open'); });
+</script>
 </body>
 </html>
