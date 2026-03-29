@@ -753,6 +753,13 @@
   <hr style="border:none;border-top:1px solid rgba(255,255,255,0.15);margin:10px 0">
   <div style="margin-bottom:6px"><b style="font-size:12px">🔤 Font Size</b></div>
   <div id="dbg-fontsize"></div>
+  <hr style="border:none;border-top:1px solid rgba(255,255,255,0.15);margin:10px 0">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <b style="font-size:12px">🖼 Orbit Cards</b>
+    <button onclick="copyCards()" style="background:#4a6e45;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px">📋 Copy All</button>
+  </div>
+  <div style="font-size:10px;color:#999;margin-bottom:6px">Drag cards on page. Adjust size/opacity/blur below.</div>
+  <div id="dbg-cards"></div>
 </div>
 <div id="edit-badge" style="display:none;position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;background:#6B8E23;color:#fff;font:bold 12px/1 system-ui;padding:6px 14px;border-radius:20px">✏️ Inline Edit Mode — click any text to edit</div>
 <button id="fab-edit" onclick="document.getElementById('dbg').style.display=document.getElementById('dbg').style.display==='none'?'block':'none'" style="display:none">
