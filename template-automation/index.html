@@ -753,7 +753,7 @@
   <div id="dbg-fontsize"></div>
 </div>
 <div id="edit-badge" style="display:none;position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;background:#6B8E23;color:#fff;font:bold 12px/1 system-ui;padding:6px 14px;border-radius:20px">✏️ Inline Edit Mode — click any text to edit</div>
-<button id="fab-edit" onclick="document.getElementById('dbg').style.display=document.getElementById('dbg').style.display==='none'?'block':'none'" style="position:fixed;bottom:20px;right:20px;z-index:9998;width:44px;height:44px;border-radius:50%;border:none;background:#2D5A27;color:#fff;font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:transform 0.2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform=''">🎛</button>
+<button id="fab-edit" onclick="document.getElementById('dbg').style.display=document.getElementById('dbg').style.display==='none'?'block':'none'" style="display:none">
 
 <script>
 const obs = new IntersectionObserver(es => {
