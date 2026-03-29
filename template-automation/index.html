@@ -267,12 +267,15 @@
     text-align: center;
   }
   .big-quote {
-    font-size: clamp(2.5rem, 5vw, 3.75rem);
+    font-size: clamp(1.5rem, 3.5vw, 3rem);
     font-weight: 800;
     letter-spacing: -0.03em;
-    line-height: 1.15;
-    max-width: 100%;
-    white-space: nowrap;
+    line-height: 1.25;
+    max-width: 32em;
+    white-space: normal;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 6vw, 80px);
     --sx: 0.64;
   }
   .big-quote em { font-style: normal; color: var(--orange); }
@@ -533,7 +536,7 @@
   <div class="center-cluster fi d1">
     <h1 style="font-size:clamp(3rem,6.5vw,5.2rem)">Template<br>Automation</h1>
     <p class="sub" style="margin-top:20px;white-space:nowrap">
-      From hours of manual testing to minutes of AI-powered batch processing
+      From hours to minutes-Transforming how we discover, create, and scale image templates
     </p>
   </div>
 </section>
@@ -541,32 +544,32 @@
 <!-- ═══ 02 PROBLEM ═══ -->
 <section id="s2" style="max-width:1200px;padding-left:calc(var(--px) * 0.67);padding-right:calc(var(--px) * 0.67)">
   <div class="label reveal">The Problem</div>
-  <h2 class="reveal" style="font-size:clamp(1.6rem,3.5vw,2.8rem)">Designers spend <span class="accent">80%</span> of their time on repetitive labor.</h2>
+  <h2 class="reveal" style="font-size:clamp(1.6rem,3.5vw,2.8rem)"> We spend most of our time executing repetitive tasks instead of making design decisions.</h2>
 
   <div class="pain-grid" style="flex-direction:row;gap:20px">
     <div class="pain-card reveal" style="flex:1;flex-direction:column;align-items:stretch">
       <div class="pain-num">01</div>
       <div class="pain-content">
-        <h3>Poor prompt quality from PMs</h3>
-        <div class="desc">PM-provided prompts are often too generic. Designers spend hours refining through trial and error.</div>
+        <h3>Weak template and prompt choices from PMs</h3>
+        <div class="desc">PM-provided templates and prompts are not ideal, requiring designers to spend additional time correcting both.</div>
       </div>
-      <div style="margin-top:16px;background:var(--card-border);border-radius:8px;height:160px;display:flex;align-items:center;justify-content:center;color:var(--fg-3);font-size:0.8rem">Image placeholder</div>
+      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="Screenshot%202026-03-26%20at%2018.27.44.png" alt="Problem 01 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
     </div>
     <div class="pain-card reveal" style="flex:1;flex-direction:column;align-items:stretch">
       <div class="pain-num">02</div>
       <div class="pain-content">
-        <h3>Slow, mechanical generation</h3>
-        <div class="desc">Upload → wait → review → repeat. Only 3 concurrent generations. 5 images × 3 rounds = 15+ manual cycles per template.</div>
+        <h3>Thumbnail generation process is very inefficient</h3>
+        <div class="desc">Upload → wait → review → repeat. The thumbnail generation process is very mechanical and time-consuming. </div>
       </div>
-      <div style="margin-top:16px;background:var(--card-border);border-radius:8px;height:160px;display:flex;align-items:center;justify-content:center;color:var(--fg-3);font-size:0.8rem">Image placeholder</div>
+      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="Screenshot%202026-03-29%20at%2009.22.56.png" alt="Problem 02 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
     </div>
     <div class="pain-card reveal" style="flex:1;flex-direction:column;align-items:stretch">
       <div class="pain-num">03</div>
       <div class="pain-content">
-        <h3>Evaluation requires Figma</h3>
+        <h3>Extra manual step to test visual quality in Figma</h3>
         <div class="desc">Every image must be manually placed into Figma's card template — just to see "does this look good at 110px?"</div>
       </div>
-      <div style="margin-top:16px;background:var(--card-border);border-radius:8px;height:160px;display:flex;align-items:center;justify-content:center;color:var(--fg-3);font-size:0.8rem">Image placeholder</div>
+      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="Screenshot%202026-03-29%20at%2009.34.51.png" alt="Problem 03 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
     </div>
   </div>
 </section>
@@ -574,14 +577,14 @@
 <!-- ═══ 03 INSIGHT ═══ -->
 <section class="quote-section" id="s3" style="max-width:100%">
   <div class="big-quote reveal">
-    "What if AI could accelerate<br>the <em>workflow</em>, not just the output?"
+    "What if AI could accelerate<br>the <em>workflow</em>, by turning market signals into ready-to-use templates, and automating the generation and evaluation process?"
   </div>
 </section>
 
 <!-- ═══ 04 SOLUTION 1 ═══ -->
 <section id="s4">
   <div class="label reveal">Solution · Part 1</div>
-  <h2 class="reveal">AI-Powered Content Discovery</h2>
+  <h2 class="reveal">AI-Powered Market Trends Discovery</h2>
   <p class="sub reveal" style="margin-top:12px">Using data-driven trend analysis to guide content direction</p>
 
   <div class="sol-card reveal">
