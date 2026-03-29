@@ -527,7 +527,7 @@
         <h3>Weak template and prompt choices from PMs</h3>
         <div class="desc">PM-provided templates and prompts are not ideal, requiring designers to spend additional time correcting both.</div>
       </div>
-      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="Screenshot%202026-03-26%20at%2018.27.44.png" alt="Problem 01 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
+      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="openLightbox(this.querySelector('img').src)"><img src="Screenshot%202026-03-26%20at%2018.27.44.png" alt="Problem 01 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
     </div>
     <div class="pain-card reveal" style="flex:1;flex-direction:column;align-items:stretch">
       <div class="pain-num">02</div>
@@ -535,7 +535,7 @@
         <h3>Thumbnail generation process is very inefficient</h3>
         <div class="desc">Upload → wait → review → repeat. The thumbnail generation process is very mechanical and time-consuming. </div>
       </div>
-      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="Screenshot%202026-03-29%20at%2009.22.56.png" alt="Problem 02 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
+      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="openLightbox(this.querySelector('img').src)"><img src="Screenshot%202026-03-29%20at%2009.22.56.png" alt="Problem 02 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
     </div>
     <div class="pain-card reveal" style="flex:1;flex-direction:column;align-items:stretch">
       <div class="pain-num">03</div>
@@ -543,7 +543,7 @@
         <h3>Extra manual step to test visual quality in Figma</h3>
         <div class="desc">Every image must be manually placed into Figma's card template — just to see "does this look good at 110px?"</div>
       </div>
-      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center"><img src="Screenshot%202026-03-29%20at%2009.34.51.png" alt="Problem 03 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
+      <div style="margin-top:16px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="openLightbox(this.querySelector('img').src)"><img src="Screenshot%202026-03-29%20at%2009.34.51.png" alt="Problem 03 illustration" style="width:100%;height:auto;display:block;border-radius:8px"></div>
     </div>
   </div>
 </section>
@@ -983,6 +983,24 @@ document.querySelectorAll('.pain-card img').forEach(img => {
   });
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('img-overlay').classList.remove('open'); });
+</script>
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);cursor:zoom-out;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s ease">
+  <img id="lb-img" src="" style="max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5);object-fit:contain">
+</div>
+<script>
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lb-img').src = src;
+  lb.style.display = 'flex';
+  requestAnimationFrame(() => lb.style.opacity = '1');
+}
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  lb.style.opacity = '0';
+  setTimeout(() => lb.style.display = 'none', 200);
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 </script>
 </body>
 </html>
