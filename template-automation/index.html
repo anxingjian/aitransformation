@@ -978,12 +978,8 @@ setTimeout(readPositions, 500);
 <div id="img-overlay" onclick="this.classList.remove('open')"><img id="overlay-img" src="" alt=""></div>
 <script>
 document.querySelectorAll('.pain-card img').forEach(img => {
-  img.addEventListener('click', () => {
-    document.getElementById('overlay-img').src = img.src;
-    document.getElementById('img-overlay').classList.add('open');
-  });
+  img.addEventListener('click', () => openLightbox(img.src));
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('img-overlay').classList.remove('open'); });
 </script>
 <!-- Lightbox -->
 <div id="lightbox" onclick="closeLightbox()" style="position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);cursor:zoom-out;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s ease">
