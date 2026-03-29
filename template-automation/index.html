@@ -823,6 +823,7 @@ function setFontSize(i, v) {
 setTimeout(updateFontPanel, 600);
 
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLightbox(); return; }
   if (e.target.isContentEditable) return;
   if (e.key === 'd' || e.key === 'D') {
     const p = document.getElementById('dbg');
@@ -977,15 +978,6 @@ setTimeout(readPositions, 500);
 <!-- Image overlay -->
 <div id="img-overlay" onclick="this.classList.remove('open')"><img id="overlay-img" src="" alt=""></div>
 <script>
-document.querySelectorAll('.pain-card img').forEach(img => {
-  img.addEventListener('click', () => openLightbox(img.src));
-});
-</script>
-<!-- Lightbox -->
-<div id="lightbox" onclick="closeLightbox()" style="position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);cursor:zoom-out;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s ease">
-  <img id="lb-img" src="" style="max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5);object-fit:contain;transform:scale(0.95);transition:transform 0.25s ease">
-</div>
-<script>
 function openLightbox(src) {
   const lb = document.getElementById('lightbox');
   document.getElementById('lb-img').src = src;
@@ -999,7 +991,14 @@ function closeLightbox() {
   lb.style.pointerEvents = 'none';
   document.getElementById('lb-img').style.transform = 'scale(0.95)';
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+document.querySelectorAll('.pain-card img').forEach(img => {
+  img.addEventListener('click', () => openLightbox(img.src));
+});
 </script>
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()" style="position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);cursor:zoom-out;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s ease">
+  <img id="lb-img" src="" style="max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5);object-fit:contain;transform:scale(0.95);transition:transform 0.25s ease">
+</div>
+
 </body>
 </html>
